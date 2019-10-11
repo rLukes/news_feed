@@ -65,11 +65,4 @@ class NewsItemModel {
     };
 
   }
-
-
-
-
-
-
-
 }

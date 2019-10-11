@@ -1,13 +1,18 @@
+import 'package:news_feed/src/resources/repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import '../models/news_item_model.dart';
 
-class DbProvider {
+class DbProvider implements Source,Cache{
   Database db;
 
-  void nit() async {
+  DbProvider(){
+    init();
+  }
+
+  void init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final dbPath = join(documentsDirectory.path, "news_ items.db");
     db = await openDatabase(dbPath, version: 1,
@@ -32,7 +37,7 @@ class DbProvider {
     });
   }
 
-  Future<NewsItemModel> getNewsItem(int id)async{
+  Future<NewsItemModel> getItem(int id)async{
     final valueMaps = await db.query(
       "NewsItem",
       columns: null,
@@ -49,4 +54,10 @@ class DbProvider {
     return db.insert("NewsItem", item.toMapForDb());
   }
 
+  @override
+  Future<List<int>> getTopIds() {
+    return null;
+  }
 }
+
+final dbProvider = DbProvider();
