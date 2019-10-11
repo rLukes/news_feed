@@ -7,7 +7,7 @@ import '../models/news_item_model.dart';
 class DbProvider {
   Database db;
 
-  init() async {
+  void nit() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final dbPath = join(documentsDirectory.path, "news_ items.db");
     db = await openDatabase(dbPath, version: 1,
@@ -32,7 +32,7 @@ class DbProvider {
     });
   }
 
-  getNewsItem(int id)async{
+  Future<NewsItemModel> getNewsItem(int id)async{
     final valueMaps = await db.query(
       "NewsItem",
       columns: null,
@@ -45,7 +45,7 @@ class DbProvider {
     return null;
   }
 
-  addNewsItem(NewsItemModel item){
+  Future<int> addNewsItem(NewsItemModel item){
     return db.insert("NewsItem", item.toMapForDb());
   }
 
