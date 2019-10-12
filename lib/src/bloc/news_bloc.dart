@@ -6,12 +6,19 @@ import 'dart:async';
 class NewsBloc {
   final _repository = new Repository();
   final _topIds = new PublishSubject<List<int>>();
+  final _itemsOutput = BehaviorSubject<Map<int, Future<NewsItemModel>>>();
+  final _itemsFetcher = PublishSubject<int>();
 
-  final _items = BehaviorSubject<int>();
 
+  
   Observable<List<int>> get topIds => _topIds.stream;
+  Observable<Map<int, Future<NewsItemModel>>> get items => _itemsOutput.stream;
 
-  Function(int) get getItem => _items.sink.add;
+  Function(int) get getItem => _itemsFetcher.sink.add;
+
+  NewsBloc(){
+   _itemsFetcher.stream.transform(_itemsTransformer()).pipe(_itemsOutput);
+  } 
 
 
   void getTopIds() async {
@@ -21,7 +28,7 @@ class NewsBloc {
 
   _itemsTransformer() {
     return ScanStreamTransformer(
-      (Map<int, Future<NewsItemModel>> cache, int id, _) {
+      (Map<int, Future<NewsItemModel>> cache, int id, index) {
         cache[id] = _repository.getItem(id);
         return cache;
       },
@@ -31,6 +38,7 @@ class NewsBloc {
 
   void dispose() {
     _topIds.close();
-    _items.close();
+    _itemsOutput.close();
+    _itemsFetcher.close();
   }
 }
