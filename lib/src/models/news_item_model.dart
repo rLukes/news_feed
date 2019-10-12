@@ -30,7 +30,7 @@ class NewsItemModel {
         url = parsedJson['url'],
         score = parsedJson['score'],
         title = parsedJson['title'],
-        descendants = parsedJson['descendants'];
+        descendants = parsedJson['descendants'] ?? 0;
 
   NewsItemModel.fromDb(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],
