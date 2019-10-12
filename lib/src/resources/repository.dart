@@ -33,6 +33,13 @@ class Repository {
     }
     return newsItem;
   }
+
+  clearCache()async{
+    for(var c in caches){
+      await c.clear();
+    }
+  }
+
 }
 
 abstract class Source {
@@ -43,4 +50,5 @@ abstract class Source {
 
 abstract class Cache {
   Future<int> addNewsItem(NewsItemModel item);
+  Future<int> clear();
 }

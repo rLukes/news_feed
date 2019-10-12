@@ -54,6 +54,12 @@ class DbProvider implements Source, Cache {
     );
   }
 
+  Future<int> clear()
+  {
+    return db.delete("NewsItem");
+  }
+
+
   @override
   Future<List<int>> getTopIds() {
     return null;

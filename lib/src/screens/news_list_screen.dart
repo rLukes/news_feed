@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_feed/src/bloc/news_bloc.dart';
 import 'package:news_feed/src/bloc/news_provider.dart';
 import 'package:news_feed/src/widgets/news_list_tile.dart';
+import 'package:news_feed/src/widgets/refresh_news.dart';
 
 class NewsListScreen extends StatelessWidget {
   @override
@@ -23,12 +24,14 @@ class NewsListScreen extends StatelessWidget {
         if(!snapshot.hasData){
           return CircularProgressIndicator();
         }
-        return ListView.builder(
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, int index){
-            newsBloc.getItem(snapshot.data[index]);
-            return NewsListTile(itemId: snapshot.data[index]);
-          },
+        return RefreshNews(
+          child: ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, int index){
+              newsBloc.getItem(snapshot.data[index]);
+              return NewsListTile(itemId: snapshot.data[index]);
+            },
+          ),
         );
       },
     );

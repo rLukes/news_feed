@@ -36,6 +36,10 @@ class NewsBloc {
     );
   }
 
+  clearCache(){
+    return _repository.clearCache();
+  }
+
   void dispose() {
     _topIds.close();
     _itemsOutput.close();
