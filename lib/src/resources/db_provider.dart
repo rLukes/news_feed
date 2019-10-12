@@ -5,10 +5,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import '../models/news_item_model.dart';
 
-class DbProvider implements Source,Cache{
+class DbProvider implements Source, Cache {
   Database db;
 
-  DbProvider(){
+  DbProvider() {
     init();
   }
 
@@ -37,21 +37,21 @@ class DbProvider implements Source,Cache{
     });
   }
 
-  Future<NewsItemModel> getItem(int id)async{
-    final valueMaps = await db.query(
-      "NewsItem",
-      columns: null,
-      where: "id=?",
-      whereArgs: [id]
-    );
-    if(valueMaps.length > 0){
+  Future<NewsItemModel> getItem(int id) async {
+    final valueMaps = await db
+        .query("NewsItem", columns: null, where: "id=?", whereArgs: [id]);
+    if (valueMaps.length > 0) {
       return NewsItemModel.fromDb(valueMaps.first);
     }
     return null;
   }
 
-  Future<int> addNewsItem(NewsItemModel item){
-    return db.insert("NewsItem", item.toMapForDb());
+  Future<int> addNewsItem(NewsItemModel item) {
+    return db.insert(
+      "NewsItem",
+      item.toMapForDb(),
+      conflictAlgorithm: ConflictAlgorithm.ignore
+    );
   }
 
   @override

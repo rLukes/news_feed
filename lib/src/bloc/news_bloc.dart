@@ -18,7 +18,7 @@ class NewsBloc {
 
   NewsBloc(){
    _itemsFetcher.stream.transform(_itemsTransformer()).pipe(_itemsOutput);
-  } 
+  }
 
 
   void getTopIds() async {

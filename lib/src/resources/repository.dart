@@ -18,7 +18,7 @@ class Repository {
 
   Future<NewsItemModel> getItem(int id) async {
     NewsItemModel newsItem;
-    Source source;
+    var source;
     for (source in sources) {
       newsItem = await source.getItem(id);
       if (newsItem != null) {
@@ -27,7 +27,9 @@ class Repository {
     }
 
     for (var cache in caches) {
-      cache.addNewsItem(newsItem);
+      if (cache != source) {
+        cache.addNewsItem(newsItem);
+      }
     }
     return newsItem;
   }
